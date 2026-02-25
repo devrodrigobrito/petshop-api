@@ -54,3 +54,24 @@ A modelagem foi projetada para:
 - Manter integridade referencial
 
 ![Database Diagram](./docs/database/er-diagram.png)
+
+---
+
+## 🏗️ Arquitetura da Aplicação
+
+O projeto segue organização por domínio (feature-based):
+
+```text
+src/
+ ├── modules/
+ ├── shared/
+ ├── lib/
+ ├── app.ts
+ └── server.ts
+```
+
+- modules → regras de negócio organizadas por domínio
+- shared → middlewares e utilidades globais
+- lib → integrações externas (Prisma, Logger)
+
+---
