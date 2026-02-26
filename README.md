@@ -75,3 +75,11 @@ src/
 - lib → integrações externas (Prisma, Logger)
 
 ---
+
+## 📚 Documentação
+
+- [Arquitetura da Aplicação](./docs/architecture.md)
+- [Regras de Negócio](./docs/business-rules.md)
+- [Diagrama ER (editável)](./docs/database/er-diagram.drawio)
+
+---
