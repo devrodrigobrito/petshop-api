@@ -78,8 +78,9 @@ src/
 
 ## 📚 Documentação
 
+- [Diagrama ER (editável)](./docs/database/er-diagram.drawio)
 - [Arquitetura da Aplicação](./docs/architecture.md)
 - [Regras de Negócio](./docs/business-rules.md)
-- [Diagrama ER (editável)](./docs/database/er-diagram.drawio)
+- [Fluxos operacionais](./docs/system-flows.md)
 
 ---
