@@ -83,5 +83,6 @@ src/
 - [Regras de Negócio](./docs/business-rules.md)
 - [Fluxos operacionais](./docs/system-flows.md)
 - [API Endpoints](./docs/api-endpoints.md)
+- [Validation Schemas](./docs/validation-schemas.md)
 
 ---
