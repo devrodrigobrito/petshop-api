@@ -82,5 +82,6 @@ src/
 - [Arquitetura da Aplicação](./docs/architecture.md)
 - [Regras de Negócio](./docs/business-rules.md)
 - [Fluxos operacionais](./docs/system-flows.md)
+- [API Endpoints](./docs/api-endpoints.md)
 
 ---
