@@ -157,6 +157,20 @@ Table appointment_services {
   created_at timestamp
 }
 
+// ======================
+// REFRESH TOKENS
+// ======================
+
+Table refresh_tokens {
+  id uuid [pk]
+  user_id uuid [not null]
+  token_hash varchar [not null]
+  expires_at timestamp [not null]
+  revoked_at timestamp 
+  created_at timestamp
+  last_used_at timestamp
+}
+
 
 // ======================
 // RELATIONSHIPS
@@ -176,3 +190,5 @@ Ref: appointments.cancelled_by_user_id > users.id
 
 Ref: appointment_services.appointment_id > appointments.id
 Ref: appointment_services.service_id > services.id
+
+Ref: refresh_tokens.user_id > users.id

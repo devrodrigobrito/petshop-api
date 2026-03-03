@@ -133,8 +133,9 @@ id          UUID PRIMARY KEY
 user_id     UUID REFERENCES users(id)
 token_hash  VARCHAR NOT NULL
 expires_at  TIMESTAMP NOT NULL
-revoked_at  TIMESTAMP NULL
-created_at  TIMESTAMP NOT NULL
+revoked_at  TIMESTAMP
+created_at  TIMESTAMP
+last_used_at TIMESTAMP
 ```
 
 ### Objetivo
