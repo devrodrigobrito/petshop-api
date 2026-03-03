@@ -84,5 +84,6 @@ src/
 - [Fluxos operacionais](./docs/system-flows.md)
 - [API Endpoints](./docs/api-endpoints.md)
 - [Validation Schemas](./docs/validation-schemas.md)
+- [Autenticação e RBAC](./docs/authentication-and-rbac.md)
 
 ---
