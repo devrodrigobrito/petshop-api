@@ -85,6 +85,7 @@ src/
 - [API Endpoints](./docs/api-endpoints.md)
 - [Validation Schemas](./docs/validation-schemas.md)
 - [Autenticação e RBAC](./docs/authentication-and-rbac.md)
-- [Logging](./docs/logging.md)
+- [Logging estruturado](./docs/logging.md)
+- [Tratamento global de erros](./docs/error-handling.md)
 
 ---
