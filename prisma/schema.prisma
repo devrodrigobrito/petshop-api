@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  EMPLOYEE
+  CLIENT
+}
+
+enum PetSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id        String    @id @default(uuid()) @db.Uuid
+  email     String    @unique
+  passwordHash  String @map("password_hash")
+  role      UserRole
+  isActive Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  client Client?
+  employee Employee?
+  refreshTokens RefreshToken[]
+  cancelledAppointments Appointment[] @relation("CancelledAppointments")
+
+  @@map("users")
+}
+
+model Client {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @unique @db.Uuid @map("user_id")
+  fullName String @map("full_name")
+  cpf String? @unique 
+  phone String? 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  pets Pet[]
+  appointments Appointment[]
+
+  @@map("clients")
+}
+
+model Employee {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @unique @db.Uuid @map("user_id")
+  fullName String @map("full_name")
+  phone String? 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  appointments Appointment[]
+
+  @@map("employees")
+}
+
+model Pet {
+  id String @id @default(uuid()) @db.Uuid 
+  clientId String @db.Uuid @map("client_id")
+  name String
+  species String
+  breed String?
+  size PetSize
+  birthDate DateTime? @db.Date @map("birth_date")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  client Client @relation(fields: [clientId], references: [id])
+
+  appointments Appointment[]
+
+  @@map("pets")
+}
+
+model Service {
+  id String @id @default(uuid()) @db.Uuid 
+  name String 
+  description String?
+  isActive Boolean @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  appointmentServices AppointmentService[]
+  serviceDurations ServiceDuration[]
+
+  @@map("services")
+}
+
+model ServiceDuration {
+  id String @id @default(uuid()) @db.Uuid
+  serviceId String @db.Uuid @map("service_id")
+  size PetSize 
+  durationMinutes Int @map("duration_minutes")
+  priceInCents Int @map("price_in_cents")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@unique([serviceId, size])
+
+  @@map("service_durations")
+}
+
+model Appointment {
+  id String @id @default(uuid()) @db.Uuid
+  clientId String @db.Uuid @map("client_id")
+  petId String @db.Uuid @map("pet_id")
+  employeeId String? @db.Uuid @map("employee_id")
+  status AppointmentStatus @default(PENDING) 
+  startTime DateTime @map("start_time")
+  endTime DateTime @map("end_time")
+  totalDuration Int @map("total_duration")
+  totalPriceInCents Int @map("total_price_in_cents")
+  notes String? 
+  cancelledAt DateTime? @map("cancelled_at")
+  cancelledByUserId String? @db.Uuid @map("cancelled_by_user_id")
+  adminNotes String? @map("admin_notes")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  client Client @relation(fields: [clientId], references: [id])
+  pet Pet @relation(fields: [petId], references: [id])
+  employee Employee? @relation(fields: [employeeId], references: [id])
+  cancelledByUser User? @relation("CancelledAppointments",fields: [cancelledByUserId], references: [id])
+
+  appointmentServices AppointmentService[]
+
+  @@map("appointments")
+}
+
+model AppointmentService {
+  id String @id @default(uuid()) @db.Uuid 
+  appointmentId String @db.Uuid @map("appointment_id")
+  serviceId String @db.Uuid @map("service_id")
+  serviceNameSnapshot String @map("service_name_snapshot")
+  durationMinutesSnapshot Int @map("duration_minutes_snapshot")
+  priceInCentsSnapshot Int @map("price_in_cents_snapshot")
+  expectedPetSizeSnapshot PetSize @map("expected_pet_size_snapshot")
+  actualPetSize PetSize? @map("actual_pet_size")
+  adjustmentNotes String? @map("adjustment_notes")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@map("appointment_services")
+}
+
+model RefreshToken {
+  id String @id @default(uuid()) @db.Uuid 
+  userId String @db.Uuid @map("user_id")
+  tokenHash String @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  lastUsedAt DateTime? @map("last_used_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("refresh_tokens")
+}
+
+
+
+
